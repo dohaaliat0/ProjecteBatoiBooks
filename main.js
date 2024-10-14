@@ -1,6 +1,18 @@
-import './style.css';
-import './functions.js';
-import '/srv/services/datos.js';
+import 'index.html';
+import { 
+  getBookById, 
+  getBookIndexById, 
+  bookExists, 
+  booksFromUser, 
+  booksFromModule, 
+  booksCheeperThan, 
+  booksWithStatus, 
+  averagePriceOfBooks, 
+  booksOfTypeNotes, 
+  booksNotSold, 
+  incrementPriceOfbooks 
+} from './src/functions.js';
+import data from './srv/services/datos.js'; 
 
 document.querySelector('#app').innerHTML = `
   <div style="text-align: center;">
@@ -9,16 +21,9 @@ document.querySelector('#app').innerHTML = `
     <p>Abre la consola para ver el resultado</p>
   </div>
 `;
-// 1. Mostrar todos los libros del usuario 4
-const librosUsuario4 = libros.filter(libro => libro.usuarioId === 4);
-console.log("Libros del usuario 4:", librosUsuario4);
 
-// 2. Mostrar todos los libros del módulo 5021 que están en buen estado ("good")
-const librosModulo5021Good = libros.filter(libro => libro.moduloId === 5021 && libro.estado === "good");
-console.log("Libros del módulo 5021 en buen estado:", librosModulo5021Good);
+console.log('Libros del usuario 4:', booksFromUser(data.books, 4));
 
-// 3. Incrementar el precio de todos los libros un 10%
-const librosConPrecioIncrementado = libros.map(libro => {
-  return { ...libro, precio: libro.precio * 1.10 };
-});
-console.log("Libros con precio incrementado:", librosConPrecioIncrementado);
+console.log('Libros del módulo 5021 en buen estado:', booksWithStatus(booksFromModule(data.books, "5021"), "good"));
+
+console.log('Libros con precio incrementado en un 10%:', incrementPriceOfbooks(data.books, 0.1));

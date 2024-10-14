@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import * as functions from '../functions'
+import * as functions from '../src/functions.js'
 
 import data from '../src/services/datos'
 const books = data.books

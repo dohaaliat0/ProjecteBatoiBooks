@@ -1,3 +1,100 @@
+function getBookById(books, bookId) {
+    let book = books.find((item) => item.id === bookId);
+    if (!book) {
+        throw new Error("No existe ese Id de libro.");
+    } 
+    return book;
+}
+
+function getBookIndexById(books, bookId) {
+    let index = books.findIndex((item) => item.id === bookId);
+    if (index === -1) {
+        throw new Error("No existe ese índice de libro.");
+    }
+    return index;
+}
+
+function bookExists(books, userId, moduleCode) {
+    return books.some((item) => item.userId === userId && item.moduleCode === moduleCode);
+}
+
+function booksFromUser(books, userId) {
+    return books.filter((item) => item.userId === userId);
+}
+
+function booksFromModule(books, moduleCode) {
+    return books.filter((item) => item.moduleCode === moduleCode);
+}
+
+const booksCheeperThan = (books, price) => {
+    return books.filter((item) => item.price <= price);
+};
+
+const booksWithStatus = (books, status) => {
+    return books.filter((item) => item.status === status);
+};
+
+const averagePriceOfBooks = (books) => {
+    if (books.length === 0) {
+        return '0.00 €'; // Cambia aquí para devolver "0.00 €" si no hay libros
+    }
+    const totalPrice = books.reduce((acc, item) => acc + item.price, 0);
+    return `${(totalPrice / books.length).toFixed(2)} €`; // Añadido el símbolo del euro
+};
+
+function booksOfTypeNotes(books) {
+    const notesBooks = books.filter((item) => item.publisher === 'Apunts');
+    return notesBooks; // Devuelve una lista vacía si no hay libros de tipo 'Apunts'
+}
+
+function booksNotSold(books) {
+    const librosNovendidos = books.filter((item) => item.sold === false);
+    return librosNovendidos; // Devuelve la lista de libros no vendidos
+}
+
+function incrementPriceOfbooks(books, percentage) {
+    if (!books || books.length === 0) {
+        return []; // Devuelve una lista vacía si no hay libros
+    }
+    return books.map(item => {
+        item.price = parseFloat((item.price * (1 + percentage)).toFixed(2)); // Asegúrate de que sea un número
+        return item;  
+    });
+}
+
+
+function getUserById(users, userId) {
+    let user = users.find((item) => item.id === userId);
+    if (!user) {
+        throw new Error("No existe ese usuario.");
+    }
+    return user;
+}
+
+function getUserIndexById(users, userId) {
+    let index = users.findIndex((item) => item.id === userId);
+    if (index === -1) {
+        throw new Error("No existe ese usuario.");
+    }
+    return index;
+}
+
+function getUserByNickName(users, nick) {
+    let usuario = users.find((item) => item.nick === nick);
+    if (!usuario) {
+        throw new Error(`No existe un usuario con el nombre de usuario "${nick}".`);
+    }
+    return usuario;
+}
+
+function getModuleByCode(modules, moduleCode) {
+    let module = modules.find((item) => item.code === moduleCode);
+    if (!module) {
+        throw new Error(`No existe un módulo con el código "${moduleCode}".`);
+    }
+    return module;
+}
+
 export {
     getBookById,
     getBookIndexById,
@@ -7,103 +104,11 @@ export {
     booksCheeperThan,
     booksWithStatus,
     averagePriceOfBooks,
-    booksOfTypeNote,
+    booksOfTypeNotes,
     booksNotSold,
     incrementPriceOfbooks,
     getUserById,
     getUserIndexById,
     getUserByNickName,
     getModuleByCode
-  }
-
-function getBookById(books, bookId) {
-    let book = books.find((item) => item.id === bookId);
-
-    if (!book) {
-        throw new Error("No existe ese libro.");
-    } else {
-        return book;
-    } 
-}
-
-function getBookIndexById(books, bookId) {
-    let bookIndex = books.findIndex(book => book.id === bookId);
-    if (index === -1) {
-        throw new Error("No existe el index de ese libro");
-    }
-    return index;
-}
-
-function bookExists(books, userId, moduleCode) {
-    return books.some(book => book.userId === userId && book.moduleCode === moduleCode);
-}
-
-function booksFromUser(books, userId) {
-    return books.filter(book => book.userId === userId);
-}
-
-function booksFromModule(books, moduleCode) {
-    return books.filter(book => book.moduleCode === moduleCode);
-}
-
-function booksCheeperThan(books, price) {
-    return books.filter(book => book.price <= price);
-}
-
-function booksWithStatus(books, status) {
-    return books.filter(book => book.status === status);
-}
-
-function averagePriceOfBooks(books) {
-    const totalPrice = books.reduce((sum, book) => sum + book.price, 0);
-    const averagePrice = (totalPrice / books.length).toFixed(2);
-    return `${averagePrice} €`;
-}
-
-function booksOfTypeNotes(books) {
-    return books.filter(book => book.type === 'notes');
-}
-
-function booksNotSold(books) {
-    return books.filter(book => !book.isSold);
-}
-
-function incrementPriceOfBooks(books, percentage) {
-    return books.map(book => ({
-        ...book,
-        price: book.price * (1 + percentage)
-    }));
-}
-
-function getUserById(users, userId) {
-    const user = users.find(user => user.id === userId);
-    if (!user) {
-        throw new Error(`User with ID ${userId} not found`);
-    }
-    return user;
-}
-
-
-function getUserIndexById(users, userId) {
-    const index = users.findIndex(user => user.id === userId);
-    if (index === -1) {
-        throw new Error(`User with ID ${userId} not found`);
-    }
-    return index;
-}
-
-function getUserByNickName(users, nick) {
-    const user = users.find(user => user.nick === nick);
-    if (!user) {
-        throw new Error(`User with nickname ${nick} not found`);
-    }
-    return user;
-}
-
-function getModuleByCode(modules, moduleCode) {
-    const module = modules.find(module => module.code === moduleCode);
-    if (!module) {
-        throw new Error(`Module with code ${moduleCode} not found`);
-    }
-    return module;
-}
+};
