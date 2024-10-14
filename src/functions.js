@@ -26,38 +26,38 @@ function booksFromModule(books, moduleCode) {
     return books.filter((item) => item.moduleCode === moduleCode);
 }
 
-const booksCheeperThan = (books, price) => {
+function booksCheeperThan (books, price) {
     return books.filter((item) => item.price <= price);
 };
 
-const booksWithStatus = (books, status) => {
+function booksWithStatus (books, status) {
     return books.filter((item) => item.status === status);
 };
 
-const averagePriceOfBooks = (books) => {
+function averagePriceOfBooks (books) {
     if (books.length === 0) {
-        return '0.00 €'; // Cambia aquí para devolver "0.00 €" si no hay libros
+        return '0.00 €'; 
     }
     const totalPrice = books.reduce((acc, item) => acc + item.price, 0);
-    return `${(totalPrice / books.length).toFixed(2)} €`; // Añadido el símbolo del euro
+    return `${(totalPrice / books.length).toFixed(2)} €`; 
 };
 
 function booksOfTypeNotes(books) {
     const notesBooks = books.filter((item) => item.publisher === 'Apunts');
-    return notesBooks; // Devuelve una lista vacía si no hay libros de tipo 'Apunts'
+    return notesBooks;
 }
 
 function booksNotSold(books) {
     const librosNovendidos = books.filter((item) => item.sold === false);
-    return librosNovendidos; // Devuelve la lista de libros no vendidos
+    return librosNovendidos; 
 }
 
 function incrementPriceOfbooks(books, percentage) {
     if (!books || books.length === 0) {
-        return []; // Devuelve una lista vacía si no hay libros
+        return []; 
     }
     return books.map(item => {
-        item.price = parseFloat((item.price * (1 + percentage)).toFixed(2)); // Asegúrate de que sea un número
+        item.price = parseFloat((item.price * (1 + percentage)).toFixed(2)); 
         return item;  
     });
 }
