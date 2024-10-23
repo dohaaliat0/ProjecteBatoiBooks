@@ -1,4 +1,5 @@
 import User from './user.class';
+import '../services/users.api';
 
 export default class Users {
   constructor() {
@@ -11,16 +12,17 @@ export default class Users {
     this.nextId = Math.max(...this.data.map(user => user.id)) + 1; 
   }
 
-  addUser(userData) {
+  async addUser(userData) {
     const newUser = new User(this.nextId++, userData.nick, userData.email, userData.password);
     this.data.push(newUser);
+    await this.addUser(userData);
     return newUser;
   }
 
   removeUser(userId) {
     const index = this.getUserIndexById(userId);
     if (index === -1) throw new Error(`Usuario con ID ${userId} no encontrado`);
-    return this.data.splice(index, 1)[0];
+    this.data = this.data.filter((user) => user.id !== userId);
   }
   changeUser(user) {
     const index = this.getUserIndexById(user.id);
