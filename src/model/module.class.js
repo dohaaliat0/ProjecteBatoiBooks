@@ -1,4 +1,3 @@
-// src/model/module.class.js
 export default class Module {
     constructor({ code, cliteral, vliteral, courseId }) {
         this.code = code;

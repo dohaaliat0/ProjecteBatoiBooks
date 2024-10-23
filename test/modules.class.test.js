@@ -1,9 +1,7 @@
-// test/modules.class.test.js
 import { describe, test, expect, beforeEach } from 'vitest';
 import Modules from '../src/model/modules.class';
 import Module from '../src/model/module.class';
 
-// Este es el dato de prueba
 const data = [
     { code: "AAAA", cliteral: "Nuevo módulo", vliteral: "Nou mòdul", courseId: "12" },
     { code: "BBBB", cliteral: "Otro módulo", vliteral: "Un altre mòdul", courseId: "34" },

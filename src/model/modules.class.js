@@ -1,4 +1,3 @@
-// src/model/modules.class.js
 import Module from './module.class';
 
 export default class Modules {

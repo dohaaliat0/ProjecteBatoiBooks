@@ -8,7 +8,7 @@ export default class Users {
 
   populate(usersData) {
     this.data = usersData.map(user => new User(user.id, user.nick, user.email, user.password));
-    this.nextId = Math.max(...this.data.map(user => user.id)) + 1; // Actualiza el ID para evitar duplicados
+    this.nextId = Math.max(...this.data.map(user => user.id)) + 1; 
   }
 
   addUser(userData) {

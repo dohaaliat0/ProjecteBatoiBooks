@@ -1,4 +1,3 @@
-// test/module.class.test.js
 import { describe, test, expect } from 'vitest';
 import Module from '../src/model/module.class';
 
