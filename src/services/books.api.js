@@ -37,7 +37,7 @@ async function addBook(bookData) {
 }
 
 async function removeDBBook(bookData) {
-    const response = await fetch(SERVER, '/' + bookData,{
+    const response = await fetch(SERVER, '/' + bookData.id,{
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
@@ -54,7 +54,7 @@ async function removeDBBook(bookData) {
 }
 
 async function changeDBBook(bookData) {
-    const response = await fetch(SERVER, '/' + bookData,{
+    const response = await fetch(SERVER, '/' + bookData.id,{
         method: 'PUT',
         body: JSON.stringify(bookData),
         headers: {

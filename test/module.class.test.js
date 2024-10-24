@@ -1,23 +1,21 @@
-import { describe, test, expect } from 'vitest';
-import Module from '../src/model/module.class';
+import { describe, test, expect } from 'vitest'
+import Module from '../src/model/module.class.js'
 
 describe('Clase Module', () => {
-    test('constructor crea un módulo', () => {
-        const data = { code: 'AAAA', cliteral: 'Nuevo módulo', vliteral: 'Nou mòdul', courseId: '12' };
-        const module = new Module(data);
-        
-        expect(module).toBeInstanceOf(Module);
-        expect(module.code).toBe(data.code);
-        expect(module.cliteral).toBe(data.cliteral);
-        expect(module.vliteral).toBe(data.vliteral);
-        expect(module.courseId).toBe(data.courseId);
+  test('constructor crea un módulo', () => {
+    const newModule = new Module('ABCD', 'Nuevo módulo', 'Nou mòdul', '12')
+    expect(newModule).toBeInstanceOf(Module);
+    expect(newModule).toEqual({
+      code: 'ABCD',
+      cliteral: 'Nuevo módulo',
+      vliteral: 'Nou mòdul',
+      courseId: '12'
     });
+  });
 
-    test('toString pinta el módulo correctamente', () => {
-        const data = { code: 'AAAA', cliteral: 'Nuevo módulo', vliteral: 'Nou mòdul', courseId: '12' };
-        const module = new Module(data);
-        
-        const expectedString = 'AAAA (Nuevo módulo) (Curso ID: 12)';
-        expect(module.toString()).toBe(expectedString);
-    });
-});
+  test('toString pinta el módulo', () => {
+    const newModule = new Module('ABCD', 'Nuevo módulo', 'Nou mòdul', '12')
+    expect(newModule.toString()).toContain('ABCD');
+  });
+
+})

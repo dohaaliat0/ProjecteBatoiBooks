@@ -1,29 +1,42 @@
 import Book from './book.class';
+import './../services/books.api';
 
 export default class Books {
     constructor() {
         this.data = [];
     }
-
-    populate(bookArray) {
-        this.data = bookArray.map(book => new Book(book));
+    
+    async populate() {
+        try {
+            const books = await getDBBooks(); 
+            this.data = books.map(book => new Book(book));
+        } catch (error) {
+            console.error('Error fetching books:', error);
+        }
     }
-
-    addBook(bookData) {
+    
+    async addBook(bookData) {
         const newBook = new Book({ id: this._generateId(), ...bookData });
         this.data.push(newBook);
+        await this.addBook(bookData);
         return newBook;
     }
 
-    removeBook(bookId) {
+    async removeBook(bookId) {
         const index = this.getBookIndexById(bookId);
-        this.data.splice(index, 1);
+        if (index === -1) {
+          throw new Error(`Libro con ID ${bookId} no encontrado`);  
+        }
+        this.data = this.data.filter((book) => book.id !== bookId);
+        await this.removeBook(bookId);
     }
+    
 
-    changeBook(bookData) {
+    async changeBook(bookData) {
         const index = this.getBookIndexById(bookData.id);
         const updatedBook = new Book(bookData);
         this.data[index] = updatedBook;
+        await this.changeBook(updatedBook);
         return updatedBook;
     }
 
@@ -79,12 +92,6 @@ export default class Books {
         return this.data.filter(item => !item.soldDate);
     }
 
-    incrementPriceOfbooks(percentage) {
-        this.data = this.data.map(item => {
-            item.price = parseFloat((item.price * (1 + percentage)).toFixed(2));
-            return item;
-        });
-    }
 
     _generateId() {
         return this.data.length > 0 ? Math.max(...this.data.map(book => book.id)) + 1 : 1;
