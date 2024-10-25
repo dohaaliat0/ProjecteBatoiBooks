@@ -1,5 +1,5 @@
 import Book from './book.class';
-import './../services/books.api';
+import './services/books.api';
 
 export default class Books {
     constructor() {
@@ -8,8 +8,8 @@ export default class Books {
     
     async populate() {
         try {
-            const books = await getDBBooks(); 
-            this.data = books.map(book => new Book(book));
+            const books = await this.getDBBooks(); // Asegúrate de que esta función está implementada correctamente
+            this.data = books.map(item => new Book(item.id, item.title, item.author)); // Ajusta según tu constructor de libro
         } catch (error) {
             console.error('Error fetching books:', error);
         }
@@ -18,26 +18,25 @@ export default class Books {
     async addBook(bookData) {
         const newBook = new Book({ id: this._generateId(), ...bookData });
         this.data.push(newBook);
-        await this.addBook(bookData);
-        return newBook;
+        return newBook; 
     }
-
+    
     async removeBook(bookId) {
         const index = this.getBookIndexById(bookId);
         if (index === -1) {
-          throw new Error(`Libro con ID ${bookId} no encontrado`);  
+            throw new Error(`Libro con ID ${bookId} no encontrado`);  
         }
+        // Elimina el libro sin llamarse a sí mismo
         this.data = this.data.filter((book) => book.id !== bookId);
-        await this.removeBook(bookId);
+        return true; // Puedes devolver algo si lo deseas
     }
     
-
     async changeBook(bookData) {
         const index = this.getBookIndexById(bookData.id);
         const updatedBook = new Book(bookData);
+        // Actualiza el libro sin llamarse a sí mismo
         this.data[index] = updatedBook;
-        await this.changeBook(updatedBook);
-        return updatedBook;
+        return updatedBook; // Retorna el libro actualizado
     }
 
     getBookById(bookId) {
@@ -91,7 +90,6 @@ export default class Books {
     booksNotSold() {
         return this.data.filter(item => !item.soldDate);
     }
-
 
     _generateId() {
         return this.data.length > 0 ? Math.max(...this.data.map(book => book.id)) + 1 : 1;

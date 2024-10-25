@@ -1,4 +1,5 @@
 const SERVER = "http://localhost:3000/users";
+export { changeDBUserPassword };
 
 
 
@@ -73,7 +74,7 @@ async function changeDBUser(userData) {
     return result;
 }
 
-async function changeDBUserPassword(userData, newPassword) {
+ async function changeDBUserPassword(userData, newPassword) {
     const response = await fetch(SERVER + '/' + userData.userId,{
         method: 'PATCH',
         body: JSON.stringify({

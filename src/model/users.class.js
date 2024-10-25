@@ -1,5 +1,5 @@
 import User from './user.class';
-import { changeDBUserPassword } from '../services/users.api';
+import { changeDBUserPassword } from './services/users.api.js'; // Ajusta la ruta si es necesario
 
 export default class Users {
   constructor() {
