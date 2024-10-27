@@ -1,6 +1,6 @@
 const SERVER = "http://localhost:3000/books";
 
-async function getDBBooks(){
+export async function getDBBooks(){
     const response = await fetch(SERVER)
     if(!response.ok){
         throw `Error ${response.status} de la BBDD: ${response.statusText}` 
@@ -10,7 +10,7 @@ async function getDBBooks(){
 
 }
 
-async function getDBBook(bookId) {
+export async function getDBBook(bookId) {
     const response = await fetch(SERVER + '/' + bookId)
     if(!response.ok){
         throw `Error ${response.status} de la BBDD: ${response.statusText}` 
@@ -19,7 +19,7 @@ async function getDBBook(bookId) {
     return posts
 }
 
-async function addBook(bookData) {
+export async function addBook(bookData) {
     const response = await fetch(SERVER,{
         method: 'POST',
         body: JSON.stringify(bookData),
@@ -36,13 +36,12 @@ async function addBook(bookData) {
     return result;
 }
 
-async function removeDBBook(bookData) {
-    const response = await fetch(SERVER, '/' + bookData.id,{
+export async function removeDBBook(bookId) {
+    const response = await fetch(SERVER + '/' + bookId,{
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(bookData)
     });
 
     if (!response.ok) {
@@ -53,14 +52,13 @@ async function removeDBBook(bookData) {
     return result;
 }
 
-async function changeDBBook(bookData) {
-    const response = await fetch(SERVER, '/' + bookData.id,{
+export async function changeDBBook(bookData) {
+    const response = await fetch(SERVER + '/' + bookData.id,{
         method: 'PUT',
         body: JSON.stringify(bookData),
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(bookData)
     });
 
     if (!response.ok) {
@@ -69,8 +67,4 @@ async function changeDBBook(bookData) {
 
     const result = await response.json();
     return result;
-}
-
-{
-    
 }

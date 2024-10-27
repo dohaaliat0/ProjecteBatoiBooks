@@ -1,4 +1,6 @@
 import Module from './module.class';
+import '../services/modules.api.js';
+import {getDBModules} from "../services/modules.api.js";
 
 export default class Modules {
     constructor() {
@@ -6,12 +8,13 @@ export default class Modules {
     }
 
  async populate() {
-        try {
-            const modules = await this.getDBModules(); 
-            this.data = modules.map(item => new Module(item.code, item.name, item.description)); 
-        } catch (error) {
-            console.error('Error fetching modules:', error);
-        }
+     const users = await getDBModules();
+     this.data = users.map((item) => new Module(
+         item.code,
+         item.cliteral,
+         item.vliteral,
+         item.courseId
+     ))
     }
     
     getModuleByCode(code) {
@@ -25,6 +28,6 @@ export default class Modules {
     }
 
     toString() {
-        return this.data.map(module => module.toString()).join('\n');
+        return this.data.map(module => module.code).join('\n');
     }
 }

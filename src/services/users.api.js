@@ -1,9 +1,6 @@
 const SERVER = "http://localhost:3000/users";
-export { changeDBUserPassword };
 
-
-
-async function getDBUsers(){
+export async function getDBUsers(){
     const response = await fetch(SERVER)
     if(!response.ok){
         throw `Error ${response.status} de la BBDD: ${response.statusText}` 
@@ -13,7 +10,7 @@ async function getDBUsers(){
 
 }
 
-async function getDBUser(userId) {
+export async function getDBUser(userId) {
     const response = await fetch(SERVER + '/' + userId)
     if(!response.ok){
         throw `Error ${response.status} de la BBDD: ${response.statusText}` 
@@ -22,7 +19,7 @@ async function getDBUser(userId) {
     return posts
 }
 
-async function addDBUser(userData) {
+export async function addDBUser(userData) {
     const response = await fetch(SERVER,{
         method: 'POST',
         body: JSON.stringify(userData),
@@ -39,31 +36,24 @@ async function addDBUser(userData) {
     return result;
 }
 
-async function removeDBUser(userId) {
-    const response = await fetch(SERVER, '/' + userId,{
+export async function removeDBUser(userId) {
+    const response = await fetch(SERVER + '/' + userId, {
         method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userData)
+        headers: { 'Content-Type': 'application/json' },
     });
-
     if (!response.ok) {
         throw `Error ${response.status} al borrar el usuario: ${response.statusText}`;
     }
-
-    const result = await response.json();
-    return result;
+    return await response.json();
 }
 
-async function changeDBUser(userData) {
-    const response = await fetch(SERVER, '/' + userData,{
+export async function changeDBUser(userData) {
+    const response = await fetch(SERVER + '/' + userData.id,{
         method: 'PUT',
         body: JSON.stringify(userData),
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData)
     });
 
     if (!response.ok) {
@@ -74,8 +64,8 @@ async function changeDBUser(userData) {
     return result;
 }
 
- async function changeDBUserPassword(userData, newPassword) {
-    const response = await fetch(SERVER + '/' + userData.userId,{
+export async function changeDBUserPassword(userId, newPassword) {
+    const response = await fetch(SERVER + '/' + userId,{
         method: 'PATCH',
         body: JSON.stringify({
             password: newPassword
@@ -91,9 +81,4 @@ async function changeDBUser(userData) {
 
     const result = await response.json();
     return result;
-}
-
-
-{
-    
 }

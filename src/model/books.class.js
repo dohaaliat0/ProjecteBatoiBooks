@@ -1,5 +1,6 @@
 import Book from './book.class';
-import './services/books.api';
+import '../services/books.api';
+import {addBook, changeDBBook, getDBBooks, removeDBBook} from "../services/books.api.js";
 
 export default class Books {
     constructor() {
@@ -8,8 +9,8 @@ export default class Books {
     
     async populate() {
         try {
-            const books = await this.getDBBooks(); // Asegúrate de que esta función está implementada correctamente
-            this.data = books.map(item => new Book(item.id, item.title, item.author)); // Ajusta según tu constructor de libro
+            const books = await getDBBooks();
+            this.data = books.map((item) => new Book(item));
         } catch (error) {
             console.error('Error fetching books:', error);
         }
@@ -18,6 +19,7 @@ export default class Books {
     async addBook(bookData) {
         const newBook = new Book({ id: this._generateId(), ...bookData });
         this.data.push(newBook);
+        await addBook(newBook);
         return newBook; 
     }
     
@@ -26,17 +28,17 @@ export default class Books {
         if (index === -1) {
             throw new Error(`Libro con ID ${bookId} no encontrado`);  
         }
-        // Elimina el libro sin llamarse a sí mismo
         this.data = this.data.filter((book) => book.id !== bookId);
-        return true; // Puedes devolver algo si lo deseas
+        await removeDBBook(bookId);
+        return true;
     }
     
     async changeBook(bookData) {
         const index = this.getBookIndexById(bookData.id);
         const updatedBook = new Book(bookData);
-        // Actualiza el libro sin llamarse a sí mismo
         this.data[index] = updatedBook;
-        return updatedBook; // Retorna el libro actualizado
+        await changeDBBook(bookData);
+        return updatedBook;
     }
 
     getBookById(bookId) {
