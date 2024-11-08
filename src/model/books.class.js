@@ -17,7 +17,7 @@ export default class Books {
     }
     
     async addBook(bookData) {
-        const newBook = new Book({ id: this._generateId(), ...bookData });
+        const newBook = new Book({ id: this._generateId().toString(), ...bookData });
         this.data.push(newBook);
         await addBook(newBook);
         return newBook; 
