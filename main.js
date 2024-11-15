@@ -14,14 +14,17 @@ document.querySelector('#app').innerHTML = `
     <li><a href="#about">Acerca de...</a></li>
   </ul>
 </nav>
+<div id="message">
+  </div>
 <div id="list"></div>
 <div id="form">
-<div>
-  <label for="id-remove">Id:</label>
-  <input type="text" id="id-remove">
-  <button id="remove">Borrar libro</button>
-</div>
 <form id="bookForm">
+   <h2 id="title">Añadir libro</h2>
+   <div id="id-book" style="display: none">
+    <label for="id">Id:</label>
+    <input type="text" id="id" name="id" value="" readonly>
+  </div>
+  
   <div>
     <label for="id-module">Módulo:</label>
     <select id="id-module">
@@ -58,7 +61,7 @@ document.querySelector('#app').innerHTML = `
   </div>
 
   <button type="submit">Añadir</button>
-  <button type="reset">Reset</button>
+  <button id="" type="reset">Reset</button>
 </form>
  </div>
 <div id="about" class="content-section">

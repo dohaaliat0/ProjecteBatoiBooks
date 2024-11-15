@@ -2127,18 +2127,9 @@
   ],
   "books": [
     {
-      "id": "3",
-      "moduleCode": "0011",
-      "publisher": "aaa",
-      "price": "3",
-      "pages": "3",
-      "status": "new",
-      "comments": "3"
-    },
-    {
       "id": "6",
       "moduleCode": "0011",
-      "publisher": "ttttt",
+      "publisher": "teeee",
       "price": "454",
       "pages": "454",
       "status": "new",
@@ -2179,17 +2170,6 @@
       "pages": "12",
       "status": "new",
       "comments": "aaaaa"
-    },
-    {
-      "id": "14",
-      "moduleCode": "0011",
-      "publisher": "doha",
-      "price": "123",
-      "pages": "123",
-      "status": "old",
-      "photo": "",
-      "comments": "asd",
-      "soldDate": ""
     }
   ]
 }

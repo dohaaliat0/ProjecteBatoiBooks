@@ -5,7 +5,7 @@ export default class View {
         this.form = document.getElementById("form")
         this.remove = document.getElementById("remove")
         this.bookForm = document.getElementById("bookForm")
-        this.message = document.getElementById("comments")
+        this.message = document.getElementById("message")
     }
     renderModulesOptions(modules) {
         modules.forEach(module => {
@@ -18,66 +18,99 @@ export default class View {
         });
     }
 
-    renderBooks(moduleClass, books){
-        books.forEach(book => {
-            this.renderBook(moduleClass, book)
-        })
-    }
-
     renderBook(moduleClass, book) {
-        const newDiv = document.createElement("div")
+        const newDiv = document.createElement("div");
         newDiv.id = book.id;
         const module = moduleClass.getModuleByCode(book.moduleCode);
+
         newDiv.innerHTML = `
-            <div>
-                <h3><strong>ID:</strong> ${book.id}</h3>
-                <h3><strong>Modulo:</strong> ${ module.cliteral }</h3>
-                <h4><strong>Editorial:</strong> ${book.publisher}</h4>
-                <p><strong>Precio:</strong> ${book.price}</p>
-                <p><strong>Paginas:</strong> ${book.pages}</p>
-                <p><strong>Estado:</strong> ${book.status}</p>
-                <p><strong>Comentarios:</strong> ${book.comments}</p>
-            </div>
-        `
-        this.bookList.appendChild(newDiv)
+        <div>
+            <h3><strong>ID:</strong> ${book.id}</h3>
+            <h3><strong>Módulo:</strong> ${module.cliteral}</h3>
+            <h4><strong>Editorial:</strong> ${book.publisher}</h4>
+            <p><strong>Precio:</strong> ${book.price}</p>
+            <p><strong>Páginas:</strong> ${book.pages}</p>
+            <p><strong>Estado:</strong> ${book.status}</p>
+            <p><strong>Comentarios:</strong> ${book.comments}</p>
+            <button class="add">
+                <span class="material-icons">icono add_shopping_cart</span>
+            </button>
+            <button class="edit">
+                <span class="material-icons">icono edit</span>
+            </button>
+            <button class="delete">
+                <span class="material-icons">icono delete</span>
+            </button>
+        </div>
+    `;
+
+        this.bookList.appendChild(newDiv);
+        return newDiv;
     }
+
+    editBook(book) {
+        document.getElementById("title").innerText = "Editar libro";
+        document.getElementById("remove-book").style.display = "none";
+        document.getElementById("id-book").style.display = "block";
+        document.getElementById("id").value = book.id;
+        document.getElementById("id-module").value = book.moduleCode;
+        document.getElementById("publisher").value = book.publisher;
+        document.getElementById("price").value = book.price;
+        document.getElementById("pages").value = book.pages;
+        document.querySelector(`input[name="status"][value="${book.status}"]`).checked = true;
+        document.getElementById("comments").value = book.comments;
+    }
+
 
     removeBook(bookId) {
         const bookElement = document.getElementById(bookId);
         bookElement.remove();
     }
 
-    renderMessage(message) {
-
+    renderMessage(type, message) {
+        console.log(type, message)
+        const DOMnewMessage = document.createElement('div');
+        DOMnewMessage.innerHTML = `${message} <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="background-color: #ff2d2d; color: white" onclick="document.getElementById('message').innerText = ''">x</button> `;
+        DOMnewMessage.className  = type + " alert alert-danger alert-dismissible";
+        DOMnewMessage.setAttribute('role',"alert");
+        this.message.appendChild(DOMnewMessage);
     }
 
     setBookSubmitHandler(callback) {
         this.bookForm.addEventListener('submit', (event) => {
             event.preventDefault()
+            const id = document.getElementById("id").value
             const moduleCode = document.getElementById("id-module").value
             const publisher = document.getElementById("publisher").value
             const price = document.getElementById("price").value
             const pages = document.getElementById("pages").value
             const status = document.querySelector('input[name="status"]:checked').value;
             const comments = document.getElementById("comments").value
-            const payload = {
-                moduleCode,
-                publisher,
-                price,
-                pages,
-                status,
-                comments
-            }
-            callback(payload)
-            document.getElementById('bookForm').reset()
-        })
-    }
 
-    setBookRemoveHandler(callback) {
-        this.remove.addEventListener('click', () => {
-            const idToRemove = document.getElementById("id-remove").value
-            callback(idToRemove)
-            document.getElementById("id-remove").value = ""
+            if (id === '') {
+                const payload = {
+                    moduleCode,
+                    publisher,
+                    price,
+                    pages,
+                    status,
+                    comments
+                }
+                callback(payload)
+            } else {
+                const payload = {
+                    id,
+                    moduleCode,
+                    publisher,
+                    price,
+                    pages,
+                    status,
+                    comments
+                }
+                callback(payload)
+            }
+
+            document.getElementById('bookForm').reset()
         })
     }
 
