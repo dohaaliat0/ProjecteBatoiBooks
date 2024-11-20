@@ -16,7 +16,6 @@ export default class Controller{
     }
     async init(){
         this.view.esconderSecciones();
-        document.getElementById("list").style.display = 'block'
         await this.model.modules.populate()
         await this.model.users.populate()
         await this.model.books.populate()
@@ -24,21 +23,17 @@ export default class Controller{
         this.view.setBookSubmitHandler(this.handleSubmitBook.bind(this))
         await this.renderBooks();
 
-        document.querySelector('a[href="#list"]').addEventListener('click', () => {
-            this.view.esconderSecciones();
-            document.getElementById("list").style.display = 'block'
-        });
-
-        document.querySelector('a[href="#form"]').addEventListener('click', () => {
-            this.view.esconderSecciones();
-            document.getElementById("form").style.display = 'block'
-        });
-
-        document.querySelector('a[href="#about"]').addEventListener('click', () => {
-            this.view.esconderSecciones();
-            document.getElementById("about").style.display = 'block'
-        });
+        this.handleRouteChange()
+        window.addEventListener("hashchange", this.handleRouteChange.bind(this))
     }
+
+    handleRouteChange() {
+        document.querySelector("#list").style.display = "none";
+        document.querySelector("#form").style.display = "none";
+        document.querySelector("#about").style.display = "none";
+        document.querySelector(window.location.hash).style.display = 'block'
+    }
+
     async handleSubmitBook(payload){
 
         if (!payload.id) {
