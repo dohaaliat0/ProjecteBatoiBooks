@@ -18,6 +18,7 @@ document.querySelector('#app').innerHTML = `
   </div>
 <div id="list"></div>
 <div id="form">
+<div id="errores" class="error" style="display: none"></div>
 <form id="bookForm">
    <h2 id="title">Añadir libro</h2>
    <div id="id-book" style="display: none">
@@ -34,7 +35,7 @@ document.querySelector('#app').innerHTML = `
 
   <div>
     <label for="publisher">Editorial:</label>
-    <input type="text" id="publisher" required>
+    <input type="text" id="publisher">
   </div>
 
   <div>

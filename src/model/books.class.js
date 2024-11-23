@@ -49,6 +49,17 @@ export default class Books {
         return book;
     }
 
+    getBookIsClone(book) {
+        const bookClone = this.data.find(item => item.moduleCode === book.moduleCode &&  item.publisher === book.publisher &&
+            item.price === book.price &&  item.pages === book.pages &&  item.status === book.status &&  item.comments === book.comments);
+        return bookClone ?? null;
+    }
+
+    getBookByModuleCode(moduleCode) {
+        const book = this.data.find(item => item.moduleCode === moduleCode);
+        return book ?? null;
+    }
+
     getBookIndexById(bookId) {
         const index = this.data.findIndex(item => item.id === bookId);
         if (index === -1) {

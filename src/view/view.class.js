@@ -1,3 +1,5 @@
+import Books from "../model/books.class.js";
+
 export default class View {
     constructor() {
         this.bookList = document.getElementById("list")
@@ -68,7 +70,6 @@ export default class View {
     }
 
     renderMessage(type, message) {
-        console.log(type, message)
         const DOMnewMessage = document.createElement('div');
         DOMnewMessage.innerHTML = `${message} <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="background-color: #ff2d2d; color: white" onclick="document.getElementById('message').innerText = ''">x</button> `;
         DOMnewMessage.className  = type + " alert alert-danger alert-dismissible";
@@ -77,41 +78,90 @@ export default class View {
     }
 
     setBookSubmitHandler(callback) {
-        this.bookForm.addEventListener('submit', (event) => {
+        this.bookForm.addEventListener('submit', async (event) => {
             event.preventDefault()
+            const booksApi = new Books();
+            await booksApi.populate();
+            const erroresDiv = document.getElementById('errores');
+            erroresDiv.innerHTML = '';
+            let hayErrores = false;
+
             const id = document.getElementById("id").value
             const moduleCode = document.getElementById("id-module").value
             const publisher = document.getElementById("publisher").value
             const price = document.getElementById("price").value
             const pages = document.getElementById("pages").value
-            const status = document.querySelector('input[name="status"]:checked').value;
+            const status = document.querySelector('input[name="status"]:checked')?.value;
             const comments = document.getElementById("comments").value
 
-            if (id === '') {
-                const payload = {
-                    moduleCode,
-                    publisher,
-                    price,
-                    pages,
-                    status,
-                    comments
-                }
-                callback(payload)
-            } else {
-                const payload = {
-                    id,
-                    moduleCode,
-                    publisher,
-                    price,
-                    pages,
-                    status,
-                    comments
-                }
-                callback(payload)
+            if (!publisher || publisher.length <= 0) {
+                this.addErrorMessage('La editorial es obligatorio');
+                hayErrores = true;
             }
 
-            document.getElementById('bookForm').reset()
+            if (!pages || pages <= 0) {
+                this.addErrorMessage('Las paginas deben ser un número mayor que 0.');
+                hayErrores = true;
+            }
+
+            if (!price || price <= 0) {
+                this.addErrorMessage('El precio debe ser un número mayor que 0.');
+                hayErrores = true;
+            }
+
+            if (!moduleCode) {
+                this.addErrorMessage('Debe seleccionar un modulo.');
+                hayErrores = true;
+            }
+
+            if (booksApi.getBookByModuleCode(moduleCode) !== null) {
+                this.addErrorMessage('Debe seleccionar un modulo que no se haya seleccionado en otro libro.');
+                hayErrores = true;
+            }
+
+            if (!hayErrores) {
+                if (id === '') {
+                    const payload = {
+                        moduleCode,
+                        publisher,
+                        price,
+                        pages,
+                        status,
+                        comments
+                    }
+
+                    if (booksApi.getBookIsClone(payload) !== null) {
+                        this.addErrorMessage('Hay un libro igual que ya existe.');
+                        document.getElementById('errores').style.display = 'block';
+                        return;
+                    }
+
+                    callback(payload)
+                } else {
+                    const payload = {
+                        id,
+                        moduleCode,
+                        publisher,
+                        price,
+                        pages,
+                        status,
+                        comments
+                    }
+                    callback(payload)
+                }
+
+                document.getElementById('errores').style.display = 'none';
+                document.getElementById('bookForm').reset()
+            } else {
+                document.getElementById('errores').style.display = 'block';
+            }
         })
+    }
+
+    addErrorMessage(message) {
+        const errorParagraph = document.createElement('p');
+        errorParagraph.textContent = message;
+        document.getElementById('errores').appendChild(errorParagraph);
     }
 
     esconderSecciones() {
